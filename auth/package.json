@@ -8,10 +8,14 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.6.0",
+    "mongoose": "^5.9.24",
     "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.5"
   },
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.7.31"
   }
 }
