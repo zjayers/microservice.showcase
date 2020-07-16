@@ -10,9 +10,9 @@ build:
 #  googleCloudBuild:
 #    projectId: microservice-showcase
   artifacts:
-    # GOOGLE CLOUD SKD SETUP
-    # US.GCR.IO/<PROJECTID>/<IMAGE NAME>
-  # - image: us.gcr.io/microservice-showcase/auth
+#   GOOGLE CLOUD SKD SETUP
+#   US.GCR.IO/<PROJECTID>/<IMAGE NAME>
+#   - image: us.gcr.io/microservice-showcase/auth
     - image: zjayers/auth
       context: auth
       docker:
