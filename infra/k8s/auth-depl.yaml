@@ -16,8 +16,14 @@ spec:
       containers:
         - name: auth
           image: zjayers/auth:latest
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
 #           GOOGLE CLOUD SKD SETUP
-#          image: us.gcr.io/microservice-showcase/auth:latest
+#          image: us.gcr.io/microservice-showcase/auth:latest=
 ---
 # Service
 apiVersion: v1

@@ -1,0 +1,8 @@
+POST micro.dev/api/users/signup
+Content-Type: application/json
+
+{
+"email": "abcs@gmail.com", "password": "abcde"
+}
+
+###

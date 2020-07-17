@@ -1,10 +1,10 @@
 export abstract class CustomError extends Error {
-  abstract statusCode: number;
+  public abstract statusCode: number;
 
   protected constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, CustomError.prototype);
   }
 
-  abstract serializeErrors(): { message: string; field?: string }[];
+  public abstract serializeErrors(): { message: string; field?: string }[];
 }
