@@ -1,0 +1,38 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata:                       # Deployment name
+  name: auth-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector:                     # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: auth
+  template:                     # How to create each individual pod
+    metadata:
+      labels:
+        app: auth
+    spec:                       # Container specifications (How the pod behaves)
+      containers:
+        - name: auth            # Container name (for logging purposes)
+          image: zjayers/auth   # Container Image
+          env:
+            - name: JWT_SECRET  # Setup JWT Secret in k8 cluster
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+# ------------------------------ Service ------------------------------ #
+apiVersion: v1
+kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
+metadata:                       # Service name
+  name: auth-srv
+spec:                           # No type is defined, the service will default to ClusterIP service
+  selector:                     # Setup selector to define the deployment to attach the service to
+    app: auth
+  ports:                        # Setup exposed ports for this pod
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

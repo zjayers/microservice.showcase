@@ -1,0 +1,32 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata:                       # Deployment name
+  name: auth-mongo-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector:                     # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: auth-mongo
+  template:                     # How to create each individual pod
+    metadata:
+      labels:
+        app: auth-mongo
+    spec:                       # Container specifications (How the pod behaves)
+      containers:
+        - name: auth-mongo      # Container name (for logging purposes)
+          image: mongo          # Container Image
+---
+# ------------------------------ Service ------------------------------ #
+apiVersion: v1
+kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
+metadata:                       # Service name
+  name: auth-mongo-srv
+spec:                           # No type is defined, the service will default to ClusterIP service
+  selector:                     # Setup selector to define the deployment to attach the service to
+    app: auth-mongo
+  ports:                        # Setup exposed ports for this pod
+    - name: auth-mongo
+      protocol: TCP
+      port: 27017
+      targetPort: 27017

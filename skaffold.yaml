@@ -1,0 +1,26 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:                         # List all config files to load into Skaffold cluster
+  kubectl:
+    manifests:
+      - ./infra/k8s/*           # Sync all files in the k8s directory
+build:
+  local:
+    push: false                 # Do not push images to Docker hub on rebuild
+  artifacts:                    # Setup skaffold images
+    - image: zjayers/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:                     # Setup sync (rebuild) options
+        manual:
+          - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
+            dest: .             # Where to sync the files to inside of the running container
+    - image: zjayers/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync: # Setup sync (rebuild) options
+        manual:
+          - src: '**/*.js'      # Sync all javascript files inside of the client/src directory
+            dest: .             # Where to sync the files to inside of the running container

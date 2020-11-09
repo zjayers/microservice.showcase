@@ -1,0 +1,32 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata:                       # Deployment name
+  name: client-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector:                     # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: client
+  template:                     # How to create each individual pod
+    metadata:
+      labels:
+        app: client
+    spec:                       # Container specifications (How the pod behaves)
+      containers:
+        - name: client            # Container name (for logging purposes)
+          image: zjayers/client   # Container Image
+---
+# ------------------------------ Service ------------------------------ #
+apiVersion: v1
+kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
+metadata:                       # Service name
+  name: client-srv
+spec:                           # No type is defined, the service will default to ClusterIP service
+  selector:                     # Setup selector to define the deployment to attach the service to
+    app: client
+  ports:                        # Setup exposed ports for this pod
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
