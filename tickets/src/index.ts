@@ -1,6 +1,6 @@
+import { app } from "./app";
 // Import Modules
 import mongoose from "mongoose";
-import { app } from "./app";
 
 // Connect to database
 (async (): Promise<void> => {
@@ -18,13 +18,13 @@ import { app } from "./app";
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log("Auth Service - Connected to MongoDB");
+    console.log("Ticket Service - Connected to MongoDB");
   } catch (e) {
     console.log(e);
   }
 
   // Listen For Requests
   app.listen(3000, () => {
-    console.log("Auth Service - Listening on port: 3000");
+    console.log("Ticket Service - Listening on port: 3000");
   });
 })();

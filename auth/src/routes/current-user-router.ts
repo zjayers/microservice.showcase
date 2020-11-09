@@ -1,6 +1,7 @@
 // Import Modules
 import express, { Request, Response, Router } from 'express';
-import { getCurrentUser } from '../middleware/get-current-user';
+
+import { getCurrentUser } from '@craterspace/common';
 
 // Init Router
 const router: Router = express.Router();
@@ -10,7 +11,7 @@ router.get(
   '/api/users/currentuser',
   getCurrentUser,
   (req: Request, res: Response): void => {
-    res.send({currentUser: req.currentUser || null});
+    res.send({ currentUser: req.currentUser || null });
   }
 );
 

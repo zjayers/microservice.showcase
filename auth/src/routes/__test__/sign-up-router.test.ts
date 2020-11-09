@@ -1,7 +1,7 @@
+import { app } from "../../app";
 /* tslint:disable:no-implicit-dependencies no-backbone-get-set-outside-model */
 //@ts-ignore
-import supertest, { Response } from "supertest";
-import { app } from "../../app";
+import supertest from "supertest";
 
 const {
   signUpRoute,
