@@ -9,7 +9,7 @@ build:
     push: false                 # Do not push images to Docker hub on rebuild
   artifacts: # Setup skaffold images
     - image: zjayers/auth
-      context: auth
+      context: auth-service
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -17,7 +17,7 @@ build:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
             dest: .             # Where to sync the files to inside of the running container
     - image: zjayers/client
-      context: client
+      context: client-service
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -25,7 +25,7 @@ build:
           - src: '**/*.js'      # Sync all javascript files inside of the client/src directory
             dest: .
     - image: zjayers/tickets
-      context: tickets
+      context: tickets-service
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -33,7 +33,7 @@ build:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
             dest: .             # Where to sync the files to inside of the running container
     - image: zjayers/orders
-      context: orders
+      context: orders-service
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options

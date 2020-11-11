@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "publish:common": "cd ./common && npm run pub",
-    "update:auth": "cd ./auth && npm update @craterspace/common --force",
-    "update:tickets": "cd ./tickets && npm update @craterspace/common --force",
-    "update:orders": "cd ./orders && npm update @craterspace/common --force",
-    "test:auth": "cd ./auth && npm run test",
-    "test:tickets": "cd ./tickets && npm run test",
-    "test:orders": "cd ./orders && npm run test",
+    "update:auth": "cd auth-service && npm update @craterspace/common --force",
+    "update:tickets": "cd tickets-service && npm update @craterspace/common --force",
+    "update:orders": "cd orders-service && npm update @craterspace/common --force",
+    "test:auth": "cd auth-service && npm run test",
+    "test:tickets": "cd tickets-service && npm run test",
+    "test:orders": "cd orders-service && npm run test",
     "sync": "run-p update:*",
     "test": "npm-run-all test:*"
   },
