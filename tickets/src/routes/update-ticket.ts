@@ -1,3 +1,4 @@
+// * Imports
 import {
   NotAuthorizedError,
   NotFoundError,
@@ -6,19 +7,26 @@ import {
 } from "@craterspace/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import { natsClient } from "../events/nats-client";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { TicketModel } from "../models/ticket-model";
 
+// * Router
 const router = express.Router();
 
+// PUT body validator
+const bodyValidator = [
+  body("title").not().isEmpty().withMessage("Title is required"),
+  body("price")
+    .isFloat({ gt: 0 })
+    .withMessage("Price must be provided and must be greater than 0"),
+];
+
+// PUT a single ticket
 router.put(
   "/api/tickets/:id",
   requireAuth,
-  [
-    body("title").not().isEmpty().withMessage("Title is required"),
-    body("price")
-      .isFloat({ gt: 0 })
-      .withMessage("Price must be provided and must be greater than 0"),
-  ],
+  bodyValidator,
   validateRequest,
   async (req: Request, res: Response) => {
     const ticket = await TicketModel.findById(req.params.id);
@@ -36,6 +44,14 @@ router.put(
       price: req.body.price,
     });
     await ticket.save();
+
+    // Publish event to NATS
+    new TicketUpdatedPublisher(natsClient.instance).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }

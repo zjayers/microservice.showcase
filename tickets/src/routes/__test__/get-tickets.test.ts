@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import supertest, { Response } from "supertest";
+import supertest from "supertest";
 import { app } from "../../app";
 
 const { ticketsRoute, signUp, validTicketTitle, validTicketPrice } = global;

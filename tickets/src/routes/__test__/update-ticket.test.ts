@@ -1,6 +1,7 @@
 import supertest from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
+import { natsClient } from "../../events/nats-client";
 
 const {
   ticketsRoute,
@@ -111,4 +112,27 @@ it("should update the ticket if valid inputs are provided", async () => {
 
   expect(ticketResponse.body.title).toEqual(updatedTicketTitle);
   expect(ticketResponse.body.price).toEqual(updatedTicketPrice);
+});
+
+it("should publish an event to the NATS server", async () => {
+  const cookie = signUp();
+
+  const response = await supertest(app)
+    .post(ticketsRoute)
+    .set("Cookie", cookie)
+    .send({
+      title: validTicketTitle,
+      price: validTicketPrice,
+    });
+
+  await supertest(app)
+    .put(`${ticketsRoute}/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: updatedTicketTitle,
+      price: updatedTicketPrice,
+    })
+    .expect(200);
+
+  expect(natsClient.instance.publish).toHaveBeenCalled();
 });

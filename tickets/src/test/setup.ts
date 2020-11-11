@@ -19,6 +19,9 @@ declare global {
   }
 }
 
+jest.mock("../events/nats-client", () =>
+  jest.requireActual("../events/__mocks__/nats-client")
+);
 let mongo: MongoMemoryServer;
 
 beforeAll(
@@ -37,6 +40,7 @@ beforeAll(
 
 beforeEach(
   async (): Promise<void> => {
+    jest.clearAllMocks();
     const collections = await mongoose.connection.db.collections();
 
     for (const collection of collections) {

@@ -1,18 +1,18 @@
 # ------------------------------ Deployment ------------------------------ #
 apiVersion: apps/v1
 kind: Deployment
-metadata:                       # Deployment name
+metadata: # Deployment name
   name: tickets-depl
 spec:
   replicas: 1                   # Copies of the image to run
-  selector:                     # Setup selector to tell deployment how to find all of the pods it will create
+  selector: # Setup selector to tell deployment how to find all of the pods it will create
     matchLabels:
       app: tickets
-  template:                     # How to create each individual pod
+  template: # How to create each individual pod
     metadata:
       labels:
         app: tickets
-    spec:                       # Container specifications (How the pod behaves)
+    spec: # Container specifications (How the pod behaves)
       containers:
         - name: tickets            # Container name (for logging purposes)
           image: zjayers/tickets   # Container Image
@@ -24,16 +24,24 @@ spec:
                   key: JWT_KEY
             - name: MONGO_URI
               value: 'mongodb://tickets-mongo-srv:27017/tickets'
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 ---
 # ------------------------------ Service ------------------------------ #
 apiVersion: v1
 kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
-metadata:                       # Service name
+metadata: # Service name
   name: tickets-srv
-spec:                           # No type is defined, the service will default to ClusterIP service
-  selector:                     # Setup selector to define the deployment to attach the service to
+spec: # No type is defined, the service will default to ClusterIP service
+  selector: # Setup selector to define the deployment to attach the service to
     app: tickets
-  ports:                        # Setup exposed ports for this pod
+  ports: # Setup exposed ports for this pod
     - name: tickets
       protocol: TCP
       port: 3000

@@ -1,5 +1,6 @@
 import supertest, { Response } from "supertest";
 import { app } from "../../app";
+import { natsClient } from "../../events/nats-client";
 import { TicketModel } from "../../models/ticket-model";
 
 const {
@@ -73,5 +74,15 @@ describe("New Ticket Route Handler", () => {
     expect(docs.length).toEqual(1);
     expect(docs[0].title).toEqual(validTicketTitle);
     expect(docs[0].price).toEqual(validTicketPrice);
+  });
+
+  it("should publish an event to the NATS server", async () => {
+    await supertest(app)
+      .post(ticketsRoute)
+      .set("Cookie", signUp())
+      .send({ title: validTicketTitle, price: validTicketPrice })
+      .expect(201);
+
+    expect(natsClient.instance.publish).toHaveBeenCalled();
   });
 });
