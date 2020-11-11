@@ -31,4 +31,12 @@ build:
       sync: # Setup sync (rebuild) options
         manual:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
-            dest: .             # Where to sync the files to inside of the running container           # Where to sync the files to inside of the running container
+            dest: .             # Where to sync the files to inside of the running container
+    - image: zjayers/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync: # Setup sync (rebuild) options
+        manual:
+          - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
+            dest: .             # Where to sync the files to inside of the running container

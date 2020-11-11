@@ -30,7 +30,7 @@ import { natsClient } from "./events/nats-client";
       useCreateIndex: true,
     });
 
-    console.log("Ticket Service - Connected to MongoDB");
+    console.log("Orders Service - Connected to MongoDB");
 
     // Connect to NATS
     await natsClient.connect(
@@ -44,6 +44,6 @@ import { natsClient } from "./events/nats-client";
 
   // Listen For Requests
   app.listen(3000, () => {
-    console.log("Ticket Service - Listening on port: 3000");
+    console.log("Orders Service - Listening on port: 3000");
   });
 })();

@@ -1,0 +1,48 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata: # Deployment name
+  name: orders-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector: # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: orders
+  template: # How to create each individual pod
+    metadata:
+      labels:
+        app: orders
+    spec: # Container specifications (How the pod behaves)
+      containers:
+        - name: orders            # Container name (for logging purposes)
+          image: zjayers/orders   # Container Image
+          env:
+            - name: JWT_SECRET  # Setup JWT Secret in k8 cluster
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: 'mongodb://orders-mongo-srv:27017/orders'
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+---
+# ------------------------------ Service ------------------------------ #
+apiVersion: v1
+kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
+metadata: # Service name
+  name: orders-srv
+spec: # No type is defined, the service will default to ClusterIP service
+  selector: # Setup selector to define the deployment to attach the service to
+    app: orders
+  ports: # Setup exposed ports for this pod
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
