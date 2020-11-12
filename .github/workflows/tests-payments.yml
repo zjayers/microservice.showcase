@@ -2,6 +2,8 @@ name: tests-payments
 
 on:
   pull_request:
+    paths:
+      - 'service.payments/**'
 
 jobs:
   build:
@@ -10,5 +12,5 @@ jobs:
       - uses: actions/checkout@v2
       - run: cd service.payments && npm install && npm run test:ci
         env: # Or as an environment variable
-          super_secret: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
 
