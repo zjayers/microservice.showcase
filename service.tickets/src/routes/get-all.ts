@@ -11,7 +11,7 @@ router.get("/api/tickets", async (req: Request, res: Response) => {
   const tickets = await TicketModel.find({});
   if (!tickets) throw new NotFoundError();
 
-  res.send(tickets);
+  res.send(tickets.filter((ticket) => ticket.orderId === undefined));
 });
 
 // * Exports
