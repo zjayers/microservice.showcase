@@ -1,7 +1,7 @@
 {
   "name": "tickets",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tickets Service",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",
