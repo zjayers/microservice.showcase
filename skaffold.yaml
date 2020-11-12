@@ -4,6 +4,7 @@ deploy: # List all config files to load into Skaffold cluster
   kubectl:
     manifests:
       - ./infrastructure/k8s/*           # Sync all files in the k8s directory
+      - ./infrastructure/k8s-dev/*
 build:
   local:
     push: false                 # Do not push images to Docker hub on rebuild

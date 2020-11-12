@@ -1,0 +1,17 @@
+name: deploy-manifests
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'infrastructure/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DOCTL_KEY }}
+      - run: doctl kubernetes cluster kubeconfig save ticketing
+      - run: kubectl apply -f infrastructure/k8s && kubectl apply -f infrastructure/k8s-prod
