@@ -1,0 +1,23 @@
+name: deploy-payments
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'service.payments/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd service.payments && docker build -t zjayers/payments .
+      - run: echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker push zjayers/payments
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DOCTL_KEY }}
+      - run: doctl kubernetes cluster kubeconfig save ticketing
+      - run: kubectl rollout restart deployment payments-depl
