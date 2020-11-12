@@ -1,10 +1,8 @@
 // * Imports
 import { app } from "./app";
 import mongoose from "mongoose";
-import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
-import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
-import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
-import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { natsClient } from "./events/nats-client";
 
 // IIFE to be immediately invoked on file load
@@ -25,6 +23,9 @@ import { natsClient } from "./events/nats-client";
   if (!process.env.NATS_CLIENT_ID) {
     throw new Error("NATS_CLIENT_ID must be defined");
   }
+  if (!process.env.STRIPE_SECRET) {
+    throw new Error("NATS_CLIENT_ID must be defined");
+  }
 
   try {
     // Connect To Mongoose
@@ -34,7 +35,7 @@ import { natsClient } from "./events/nats-client";
       useCreateIndex: true,
     });
 
-    console.log("Orders Service - Connected to MongoDB");
+    console.log("Payments Service - Connected to MongoDB");
 
     // Connect to NATS
     await natsClient.connect(
@@ -43,17 +44,15 @@ import { natsClient } from "./events/nats-client";
       process.env.NATS_URL
     );
 
-    // Initialize NATS listeners
-    new TicketCreatedListener(natsClient.instance).listen();
-    new TicketUpdatedListener(natsClient.instance).listen();
-    new ExpirationCompleteListener(natsClient.instance).listen();
-    new PaymentCreatedListener(natsClient.instance).listen();
+    // Setup NATS listeners
+    new OrderCreatedListener(natsClient.instance).listen();
+    new OrderCancelledListener(natsClient.instance).listen();
   } catch (e) {
     console.log(e);
   }
 
   // Listen For Requests
   app.listen(3000, () => {
-    console.log("Orders Service - Listening on port: 3000");
+    console.log("Payments Service - Listening on port: 3000");
   });
 })();

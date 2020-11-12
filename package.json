@@ -9,10 +9,12 @@
     "update:tickets": "cd service.tickets && npm update @craterspace/common --force",
     "update:orders": "cd service.orders && npm update @craterspace/common --force",
     "update:expiration": "cd service.expiration && npm update @craterspace/common --force",
+    "update:payments": "cd service.payments && npm update @craterspace/common --force",
     "test:auth": "cd service.auth && jest --verbose",
     "test:tickets": "cd service.tickets && jest --verbose",
     "test:orders": "cd service.orders && jest --verbose",
     "test:expiration": "cd service.expiration && jest --verbose",
+    "test:payments": "cd service.payments && jest --verbose",
     "sync": "run-p update:*",
     "test": "npm-run-all test:*"
   },

@@ -48,3 +48,11 @@ build:
         manual:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
             dest: .             # Where to sync the files to inside of the running container
+    - image: zjayers/payments
+      context: service.payments
+      docker:
+        dockerfile: Dockerfile
+      sync: # Setup sync (rebuild) options
+        manual:
+          - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
+            dest: .             # Where to sync the files to inside of the running container

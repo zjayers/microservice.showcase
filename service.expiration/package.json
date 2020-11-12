@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@craterspace/common": "^1.0.21",
+    "@craterspace/common": "^1.0.24",
     "bull": "^3.18.1",
     "node-nats-streaming": "^0.3.2"
   },
