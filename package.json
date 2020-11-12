@@ -1,7 +1,7 @@
 {
   "name": "microservice.complete",
   "version": "1.0.0",
-  "description": "",
+  "description": "Microservice Showcase",
   "main": "index.js",
   "scripts": {
     "publish:common": "cd ./common && npm run pub",

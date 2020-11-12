@@ -2,6 +2,8 @@ name: tests-auth
 
 on:
   pull_request:
+    paths:
+      - 'service.auth/**'
 
 jobs:
   build:
