@@ -1,18 +1,18 @@
-import 'express-async-errors';
+import "express-async-errors";
 
 // Import Modules
-import { NotFoundError, errorHandler } from '@craterspace/common';
-import express, { Express } from 'express';
+import { NotFoundError, errorHandler } from "@craterspace/common";
+import express, { Express } from "express";
 
-import cookieSession from 'cookie-session';
-import { currentUserRouter } from './routes/current-user-router';
-import { signInRouter } from './routes/sign-in-router';
-import { signOutRouter } from './routes/sign-out-router';
-import { signUpRouter } from './routes/sign-up-router';
+import cookieSession from "cookie-session";
+import { currentUserRouter } from "./routes/current-user-router";
+import { signInRouter } from "./routes/sign-in-router";
+import { signOutRouter } from "./routes/sign-out-router";
+import { signUpRouter } from "./routes/sign-up-router";
 
 // Init Express & Body-Parser
 const app: Express = express();
-app.set('trust proxy', true);
+app.set("trust proxy", true);
 
 // Body parser
 app.use(express.json());
@@ -21,7 +21,8 @@ app.use(express.json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test',
+    secure: false, // This is to bypass https check, this should be
+    // [process.env.NODE_ENV !== 'test']
   })
 );
 
@@ -32,7 +33,7 @@ app.use(signOutRouter);
 app.use(signUpRouter);
 
 // 404 Not Found
-app.all('*', async () => {
+app.all("*", async () => {
   throw new NotFoundError();
 });
 
