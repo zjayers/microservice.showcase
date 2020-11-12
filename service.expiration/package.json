@@ -1,7 +1,7 @@
 {
   "name": "expiration",
   "version": "1.0.0",
-  "description": "",
+  "description": "expiration service",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",

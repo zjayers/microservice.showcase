@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "",
+  "description": "client service",
   "main": "index.js",
   "scripts": {
     "dev": "next"
