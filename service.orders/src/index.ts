@@ -1,6 +1,7 @@
 // * Imports
 import { app } from "./app";
 import mongoose from "mongoose";
+import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { natsClient } from "./events/nats-client";
@@ -44,6 +45,7 @@ import { natsClient } from "./events/nats-client";
     // Initialize NATS listeners
     new TicketCreatedListener(natsClient.instance).listen();
     new TicketUpdatedListener(natsClient.instance).listen();
+    new ExpirationCompleteListener(natsClient.instance).listen();
   } catch (e) {
     console.log(e);
   }

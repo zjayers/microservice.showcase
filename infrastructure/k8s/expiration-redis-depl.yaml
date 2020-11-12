@@ -1,0 +1,32 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata: # Deployment name
+  name: expiration-redis-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector: # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: expiration-redis
+  template: # How to create each individual pod
+    metadata:
+      labels:
+        app: expiration-redis
+    spec: # Container specifications (How the pod behaves)
+      containers:
+        - name: expiration-redis      # Container name (for logging purposes)
+          image: redis          # Container Image
+---
+# ------------------------------ Service ------------------------------ #
+apiVersion: v1
+kind: Service                   # Default: ClusterIP Service (Only allow access from inside cluster)
+metadata: # Service name
+  name: expiration-redis-srv
+spec: # No type is defined, the service will default to ClusterIP service
+  selector: # Setup selector to define the deployment to attach the service to
+    app: expiration-redis
+  ports: # Setup exposed ports for this pod
+    - name: expiration-redis
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

@@ -1,0 +1,29 @@
+# ------------------------------ Deployment ------------------------------ #
+apiVersion: apps/v1
+kind: Deployment
+metadata: # Deployment name
+  name: expiration-depl
+spec:
+  replicas: 1                   # Copies of the image to run
+  selector: # Setup selector to tell deployment how to find all of the pods it will create
+    matchLabels:
+      app: expiration
+  template: # How to create each individual pod
+    metadata:
+      labels:
+        app: expiration
+    spec: # Container specifications (How the pod behaves)
+      containers:
+        - name: expiration            # Container name (for logging purposes)
+          image: zjayers/expiration   # Container Image
+          env:
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: REDIS_HOST
+              value: expiration-redis-srv

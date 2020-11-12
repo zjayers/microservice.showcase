@@ -3,13 +3,13 @@ kind: Config
 deploy: # List all config files to load into Skaffold cluster
   kubectl:
     manifests:
-      - ./infra/k8s/*           # Sync all files in the k8s directory
+      - ./infrastructure/k8s/*           # Sync all files in the k8s directory
 build:
   local:
     push: false                 # Do not push images to Docker hub on rebuild
   artifacts: # Setup skaffold images
     - image: zjayers/auth
-      context: auth-service
+      context: service.auth
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -17,7 +17,7 @@ build:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
             dest: .             # Where to sync the files to inside of the running container
     - image: zjayers/client
-      context: client-service
+      context: service.client
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -25,7 +25,7 @@ build:
           - src: '**/*.js'      # Sync all javascript files inside of the client/src directory
             dest: .
     - image: zjayers/tickets
-      context: tickets-service
+      context: service.tickets
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
@@ -33,7 +33,15 @@ build:
           - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
             dest: .             # Where to sync the files to inside of the running container
     - image: zjayers/orders
-      context: orders-service
+      context: service.orders
+      docker:
+        dockerfile: Dockerfile
+      sync: # Setup sync (rebuild) options
+        manual:
+          - src: 'src/**/*.ts'  # Sync all typescript files inside of the auth/src directory
+            dest: .             # Where to sync the files to inside of the running container
+    - image: zjayers/expiration
+      context: service.expiration
       docker:
         dockerfile: Dockerfile
       sync: # Setup sync (rebuild) options
