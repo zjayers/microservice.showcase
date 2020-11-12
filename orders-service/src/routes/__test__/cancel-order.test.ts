@@ -27,6 +27,7 @@ describe("Cancel Order Handler", () => {
       const user2Cookie = signUp();
 
       const ticket = TicketModel.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: validTicketTitle,
         price: validTicketPrice,
       });
@@ -51,6 +52,7 @@ describe("Cancel Order Handler", () => {
     const user1Cookie = signUp();
 
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });
@@ -80,6 +82,7 @@ describe("Cancel Order Handler", () => {
     const user1Cookie = signUp();
 
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });

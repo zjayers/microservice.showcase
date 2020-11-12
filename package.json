@@ -8,9 +8,9 @@
     "update:auth": "cd auth-service && npm update @craterspace/common --force",
     "update:tickets": "cd tickets-service && npm update @craterspace/common --force",
     "update:orders": "cd orders-service && npm update @craterspace/common --force",
-    "test:auth": "cd auth-service && npm run test",
-    "test:tickets": "cd tickets-service && npm run test",
-    "test:orders": "cd orders-service && npm run test",
+    "test:auth": "cd auth-service && jest --verbose",
+    "test:tickets": "cd tickets-service && jest --verbose",
+    "test:orders": "cd orders-service && jest --verbose",
     "sync": "run-p update:*",
     "test": "npm-run-all test:*"
   },

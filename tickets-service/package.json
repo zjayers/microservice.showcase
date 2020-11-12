@@ -11,13 +11,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@craterspace/common": "^1.0.15",
+    "@craterspace/common": "^1.0.19",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.13",
+    "mongoose-update-if-current": "^1.4.0",
     "node-nats-streaming": "^0.3.2"
   },
   "devDependencies": {

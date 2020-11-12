@@ -1,6 +1,8 @@
 // * Imports
 import { app } from "./app";
 import mongoose from "mongoose";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { natsClient } from "./events/nats-client";
 
 // IIFE to be immediately invoked on file load
@@ -38,6 +40,10 @@ import { natsClient } from "./events/nats-client";
       process.env.NATS_CLIENT_ID,
       process.env.NATS_URL
     );
+
+    // Setup NATS listeners
+    new OrderCreatedListener(natsClient.instance).listen();
+    new OrderCancelledListener(natsClient.instance).listen();
   } catch (e) {
     console.log(e);
   }

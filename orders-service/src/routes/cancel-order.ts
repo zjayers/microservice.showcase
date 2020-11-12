@@ -46,6 +46,7 @@ router.patch(
 
     new OrderCancelledPublisher(natsClient.instance).publish({
       id: order.id,
+      version: order.version,
       ticket: {
         id: order.ticket.id,
       },

@@ -29,7 +29,7 @@ class NatsClient {
       });
 
       this.instance.on("close", () => {
-        console.log(`Ticket Service - Disconnected from NATS`);
+        console.log(`Orders Service - Disconnected from NATS`);
         process.exit();
       });
 

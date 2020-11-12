@@ -1,5 +1,6 @@
 import { OrderStatus } from "@craterspace/common";
 import mongoose, { Document, Schema } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { ITicketDoc } from "./ticket-model";
 
 // Attributes Interface
@@ -11,11 +12,8 @@ export interface IOrderAttrs {
 }
 
 // Document Interface
-export interface IOrderDoc extends Document {
-  userId: string;
-  status: OrderStatus;
-  expiresAt: Date;
-  ticket: ITicketDoc;
+export interface IOrderDoc extends Document, IOrderAttrs {
+  version: number;
 }
 
 // Model Interface
@@ -53,6 +51,11 @@ const orderSchema: Schema = new Schema(
     },
   }
 );
+
+// Setup optimistic concurrency control
+// Rename __v to 'version'
+orderSchema.set("versionKey", "version");
+orderSchema.plugin(updateIfCurrentPlugin);
 
 // Override the static build function
 orderSchema.statics.build = (attributes: IOrderAttrs): IOrderDoc =>

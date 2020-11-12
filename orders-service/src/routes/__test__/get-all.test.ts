@@ -15,6 +15,7 @@ const createOneOrder = async (cookie: string[], ticket: ITicketDoc) => {
 
 const createOneTicket = async () => {
   const ticket = TicketModel.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: validTicketTitle,
     price: validTicketPrice,
   });

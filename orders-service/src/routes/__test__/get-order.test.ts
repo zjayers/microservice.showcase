@@ -24,6 +24,7 @@ describe("Get One Order", () => {
       const user2Cookie = signUp();
 
       const ticket = TicketModel.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: validTicketTitle,
         price: validTicketPrice,
       });
@@ -48,6 +49,7 @@ describe("Get One Order", () => {
     const user1Cookie = signUp();
 
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });

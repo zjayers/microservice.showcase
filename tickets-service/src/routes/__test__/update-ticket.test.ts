@@ -2,6 +2,7 @@ import supertest from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 import { natsClient } from "../../events/nats-client";
+import { TicketModel } from "../../models/ticket-model";
 
 const {
   ticketsRoute,
@@ -86,9 +87,11 @@ describe("Update Ticket Route Handler", function () {
   });
 
   it("should update the ticket if valid inputs are provided", async () => {
+    const cookie = signUp();
+
     const response = await supertest(app)
       .post(ticketsRoute)
-      .set("Cookie", signUp())
+      .set("Cookie", cookie)
       .send({
         title: validTicketTitle,
         price: validTicketPrice,
@@ -96,7 +99,7 @@ describe("Update Ticket Route Handler", function () {
 
     await supertest(app)
       .put(`${ticketsRoute}/${response.body.id}`)
-      .set("Cookie", signUp())
+      .set("Cookie", cookie)
       .send({
         title: updatedTicketTitle,
         price: updatedTicketPrice,
@@ -112,9 +115,11 @@ describe("Update Ticket Route Handler", function () {
   });
 
   it("should publish an event to the NATS server", async () => {
+    const cookie = signUp();
+
     const response = await supertest(app)
       .post(ticketsRoute)
-      .set("Cookie", signUp())
+      .set("Cookie", cookie)
       .send({
         title: validTicketTitle,
         price: validTicketPrice,
@@ -122,7 +127,7 @@ describe("Update Ticket Route Handler", function () {
 
     await supertest(app)
       .put(`${ticketsRoute}/${response.body.id}`)
-      .set("Cookie", signUp())
+      .set("Cookie", cookie)
       .send({
         title: updatedTicketTitle,
         price: updatedTicketPrice,
@@ -130,5 +135,33 @@ describe("Update Ticket Route Handler", function () {
       .expect(200);
 
     expect(natsClient.instance.publish).toHaveBeenCalled();
+  });
+
+  it("should reject an update if the ticket is reserved", async () => {
+    const cookie = signUp();
+
+    // Create a ticket
+    const response = await supertest(app)
+      .post(ticketsRoute)
+      .set("Cookie", cookie)
+      .send({
+        title: validTicketTitle,
+        price: validTicketPrice,
+      });
+
+    // Reach into the database and set the ticket as reserved
+    const ticket = await TicketModel.findById(response.body.id);
+    ticket!.set({ orderId: mongoose.Types.ObjectId().toHexString() });
+    await ticket!.save();
+
+    // Edit the ticket
+    await supertest(app)
+      .put(`${ticketsRoute}/${response.body.id}`)
+      .set("Cookie", cookie)
+      .send({
+        title: updatedTicketTitle,
+        price: updatedTicketPrice,
+      })
+      .expect(400);
   });
 });

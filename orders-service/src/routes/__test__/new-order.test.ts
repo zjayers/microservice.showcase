@@ -53,6 +53,7 @@ describe("New Order Route Handler", () => {
 
   it("should return an error if the ticket is already reserved", async () => {
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });
@@ -77,6 +78,7 @@ describe("New Order Route Handler", () => {
 
   it("should create an order if inputs are valid", async () => {
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });
@@ -100,6 +102,7 @@ describe("New Order Route Handler", () => {
 
   it("should publish an event to the NATS server", async () => {
     const ticket = TicketModel.build({
+      id: mongoose.Types.ObjectId().toHexString(),
       title: validTicketTitle,
       price: validTicketPrice,
     });
