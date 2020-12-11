@@ -1,8 +1,7 @@
 # Microservice Showcase
-[![GitHub Release](https://img.shields.io/github/release/zjayers/microservice.showcase.svg?style=flat)]()
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/zjayers/microservice.showcase.svg?style=flat)]()
+[![GitHub Release](https://img.shields.io/github/release/zjayers/microservice.showcase.svg?style=flat)](https://github.com/zjayers/microservice.showcase/releases)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/zjayers/microservice.showcase.svg?style=flat)](https://github.com/zjayers/microservice.showcase/pulls)
 [![Issues](https://img.shields.io/github/issues-raw/zjayers/microservice.showcase.svg?maxAge=25000)](https://github.com/zjayers/microservice.showcase/issues)
-[![MIT License](https://img.shields.io/apm/l/atomic-ui.svg?)](https://github.com/zjayers/microservice.showcase/blob/master/LICENSEs)
 
 ## Description
 
